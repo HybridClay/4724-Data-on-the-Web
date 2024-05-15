@@ -1,0 +1,268 @@
+Creating nodes and giving them some properties. Building relationships.
+WARNING: It is very, very particular. Meaning that if you type something in
+either caps, caps and small, something with space, you have to retrieve it in that way
+Suggestion: Do it all in smalls(lower case)!
+
+
+ 
+10) Creating nodes for movie,actor,and director:
+a)
+create(fbcrime:movie{name:"fb crimes of grindelwald",ol:"english",genre:"adventure"})
+create(theory:movie{name:"the theory of everything",ol:"english",genre:"drama"})
+create(alien:movie{name:"alien covenant",ol:"english",genre:"horror"})
+create(fbwhere:movie{name:"fb and where to find them",ol:"english",genre:"adventure"})
+
+b)
+create(eddie:actor{name:"eddie",pob:"england",yob:1982})
+create(katherine:actor{name:"katherine",pob:"england",yob:1980})
+create(colin:actor{name:"colin",pob:"ireland",yob:1976})
+create(johnny:actor{name:"johnny",pob:"usa",yob:1963})
+create(alison:actor{name:"alison",pob:"usa",yob:1984})
+create(michael:actor{name:"michael",pob:"germany",yob:1977})
+
+c)
+create(david:director{name:"david",pob:"england",yob:1963})
+create(james:director{name:"james",pob:"england",yob:1963})
+create(ridley:director{name:"ridley",pob:"england",yob:1937})
+
+NOTE: We entered the whole thing into Neo4j all together
+
+
+
+11) Creating the relationships: 
+
+ai)actor to movie-"acted in":
+
+match(a:actor),(m:movie) where a.name="eddie" and m.name="fb crimes of grindelwald"
+create(a)-[r:acted_in]->(m)
+
+match(a:actor),(m:movie) where a.name="eddie" and m.name="the theory of everything"
+create(a)-[r:acted_in]->(m)
+
+match(a:actor),(m:movie) where a.name="eddie" and m.name="fb and where to find them"
+create(a)-[r:acted_in]->(m)
+
+match(a:actor),(m:movie) where a.name="katherine" and m.name="fb crimes of grindelwald"
+create(a)-[r:acted_in]->(m)
+
+match(a:actor),(m:movie) where a.name="katherine" and m.name="alien covenant"
+create(a)-[r:acted_in]->(m)
+
+match(a:actor),(m:movie) where a.name="katherine" and m.name="fb and where to find them"
+create(a)-[r:acted_in]->(m)
+
+match(a:actor),(m:movie) where a.name="colin" and m.name="fb and where to find them"
+create(a)-[r:acted_in]->(m)
+
+match(a:actor),(m:movie) where a.name="johnny" and m.name="fb crimes of grindelwald"
+create(a)-[r:acted_in]->(m)
+
+match(a:actor),(m:movie) where a.name="johnny" and m.name="fb and where to find them"
+create(a)-[r:acted_in]->(m)
+
+match(a:actor),(m:movie) where a.name="alison" and m.name="fb crimes of grindelwald"
+create(a)-[r:acted_in]->(m)
+
+match(a:actor),(m:movie) where a.name="alison" and m.name="fb and where to find them"
+create(a)-[r:acted_in]->(m)
+
+match(a:actor),(m:movie) where a.name="michael" and m.name="alien covenant"
+create(a)-[r:acted_in]->(m)
+
+NOTE: We enetered the above relationships one by one.
+
+
+
+aii)movie to actor-"has actor":
+
+match(m:movie),(a:actor) where m.name="fb crimes of grindelwald" and a.name="eddie"
+create(m)-[r:has_actor]->(a);
+match(m:movie),(a:actor) where m.name="fb crimes of grindelwald" and a.name="katherine"
+create(m)-[r:has_actor]->(a);
+match(m:movie),(a:actor) where m.name="fb crimes of grindelwald" and a.name="johnny"
+create(m)-[r:has_actor]->(a);
+match(m:movie),(a:actor) where m.name="fb crimes of grindelwald" and a.name="alison"
+create(m)-[r:has_actor]->(a);
+match(m:movie),(a:actor) where m.name="the theory of everything" and a.name="eddie"
+create(m)-[r:has_actor]->(a);
+match(m:movie),(a:actor) where m.name="alien covenant" and a.name="katherine"
+create(m)-[r:has_actor]->(a);
+match(m:movie),(a:actor) where m.name="alien covenant" and a.name="michael"
+create(m)-[r:has_actor]->(a);
+match(m:movie),(a:actor) where m.name="fb and where to find them" and a.name="eddie"
+create(m)-[r:has_actor]->(a);
+match(m:movie),(a:actor) where m.name="fb and where to find them" and a.name="katherine"
+create(m)-[r:has_actor]->(a);
+match(m:movie),(a:actor) where m.name="fb and where to find them" and a.name="colin"
+create(m)-[r:has_actor]->(a);
+match(m:movie),(a:actor) where m.name="fb and where to find them" and a.name="johnny"
+create(m)-[r:has_actor]->(a);
+match(m:movie),(a:actor) where m.name="fb and where to find them" and a.name="alison"
+create(m)-[r:has_actor]->(a);
+
+NOTE:We were able to enter the the whole thing by sepereating each relationship made, with a semicolon; 
+
+
+
+bi)actor to director-"worked under":
+
+match(a:actor),(d:director) where a.name="eddie" and d.name="david"
+create(a)-[r:worked_under]->(d);
+match(a:actor),(d:director) where a.name="eddie" and d.name="james"
+create(a)-[r:worked_under]->(d);
+match(a:actor),(d:director) where a.name="katherine" and d.name="david"
+create(a)-[r:worked_under]->(d);
+match(a:actor),(d:director) where a.name="katherine" and d.name="ridley"
+create(a)-[r:worked_under]->(d);
+match(a:actor),(d:director) where a.name="colin" and d.name="david"
+create(a)-[r:worked_under]->(d);
+match(a:actor),(d:director) where a.name="johnny" and d.name="david"
+create(a)-[r:worked_under]->(d);
+match(a:actor),(d:director) where a.name="alison" and d.name="david"
+create(a)-[r:worked_under]->(d);
+match(a:actor),(d:director) where a.name="michael" and d.name="ridley"
+create(a)-[r:worked_under]->(d);
+
+bii)director to actor-"directed actor":
+
+match(d:director),(a:actor) where d.name="david" and a.name="eddie"
+create(d)-[r:directed_actor]->(a);
+match(d:director),(a:actor) where d.name="david" and a.name="katherine"
+create(d)-[r:directed_actor]->(a);
+match(d:director),(a:actor) where d.name="david" and a.name="colin"
+create(d)-[r:directed_actor]->(a);
+match(d:director),(a:actor) where d.name="david" and a.name="johnny"
+create(d)-[r:directed_actor]->(a);
+match(d:director),(a:actor) where d.name="david" and a.name="alison"
+create(d)-[r:directed_actor]->(a);
+match(d:director),(a:actor) where d.name="james" and a.name="eddie"
+create(d)-[r:directed_actor]->(a);
+match(d:director),(a:actor) where d.name="ridley" and a.name="katherine"
+create(d)-[r:directed_actor]->(a);
+match(d:director),(a:actor) where d.name="ridley" and a.name="michael"
+create(d)-[r:directed_actor]->(a);
+
+ci)director to movie-"directed":
+
+match(d:director),(m:movie) where d.name="david" and m.name="fb crimes of grindelwald"
+create(d)-[r:directed]->(m);
+match(d:director),(m:movie) where d.name="david" and m.name="fb and where to find them"
+create(d)-[r:directed]->(m);
+match(d:director),(m:movie) where d.name="james" and m.name="the theory of everything"
+create(d)-[r:directed]->(m);
+match(d:director),(m:movie) where d.name="ridley" and m.name="alien covenant"
+create(d)-[r:directed]->(m);
+
+cii)movie to director-"was directed by":
+
+match(m:movie),(d:director) where m.name="fb crimes of grindelwald" and d.name="david"
+create(m)-[r:was_directed_by]->(d);
+match(m:movie),(d:director) where m.name="the theory of everything" and d.name="james"
+create(m)-[r:was_directed_by]->(d);
+match(m:movie),(d:director) where m.name="alien covenant" and d.name="ridley"
+create(m)-[r:was_directed_by]->(d);
+match(m:movie),(d:director) where m.name="fb and where to find them" and d.name="david"
+create(m)-[r:was_directed_by]->(d);
+
+di)actor to actor-"worked with":
+
+match(a:actor),(b:actor) where a.name="eddie" and b.name="katherine"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="katherine" and b.name="eddie"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="eddie" and b.name="alison"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="alison" and b.name="eddie"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="eddie" and b.name="johnny"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="johnny" and b.name="eddie"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="eddie" and b.name="colin"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="colin" and b.name="eddie"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="katherine" and b.name="alison"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="alison" and b.name="katherine"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="katherine" and b.name="johnny"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="johnny" and b.name="katherine"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="katherine" and b.name="michael"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="michael" and b.name="katherine"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="katherine" and b.name="colin"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="colin" and b.name="katherine"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="colin" and b.name="alison"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="alison" and b.name="colin"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="colin" and b.name="johnny"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="johnny" and b.name="colin"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="johnny" and b.name="alison"
+create(a)-[r:worked_with]->(b);
+match(a:actor),(b:actor) where a.name="alison" and b.name="johnny"
+create(a)-[r:worked_with]->(b);
+
+
+12)commands:
+
+a)
+
+match(a:actor)-[r:acted_in]->(m:movie) where a.name="eddie" return a,m
+
+match(a:actor)-[r:acted_in]->(m:movie) where a.name="katherine" return a,m
+
+b)
+
+match(a:actor)-[r:worked_with]->(b:actor) where a.name="eddie" return a,b
+
+match(a:actor)-[r:worked_with]->(b:actor) where a.name="katherine" return a,b
+
+c)
+
+match(a:actor)-[r:worked_under]->(d:director) where a.name="eddie" return a,d
+
+match(a:actor)-[r:worked_under]->(d:director) where a.name="katherine" return a,d
+
+d)
+
+match(n) where n.pob="england" return n
+
+match(a:actor) where a.pob="england" return a
+
+
+
+
+
+Commands:
+match(n) return n                                         shows you all the nodes and the relationships
+
+match(n) where n.pob="usa" return n                        finds a specific thing in a node
+
+match(a:actor)-[r:worked_with]->(b:actor) return a,b       shows you who have this type of relationship
+
+match(n) where n.name="johnny" set n.owns="bmw"         adding an extra property for a node//to change info of a property
+
+match(n) return count(n)                                    to show how many nodes we have
+
+match(n) return n.name order by n.name                      to put things in order
+
+match(n) return n.name,n.pob order by n.name desc limit 2      to put things in order in descending order limiting to show 								up to 2 records or we can skip the first two records shown
+                                                skip 2 limit 2     
+
+match()-->() return count(*)                                 count how many relationships
+
+match(n{name:"eddie"})-[r.workd_with]->() delete r           getting rid of a relationship   
+
+match(n{name:"eddie"}) detach delete n                       getting rid of a node
+
+match(n) detach delete n                                     getting rid of everyone
+
