@@ -1,0 +1,323 @@
+
+PART1: In MySQL using cunystudent database:
+
+1)
+
+CREATE TABLE Books(
+book_code INT PRIMARY KEY,
+book_title VARCHAR(25)
+);
+
+CREATE TABLE Publisher(
+publisher_id INT PRIMARY KEY,
+publisher_name VARCHAR(20)
+);
+
+CREATE TABLE Author(
+author_id INT PRIMARY KEY,
+author_name VARCHAR(20)
+);
+
+CREATE TABLE T1(
+book_id INT PRIMARY KEY,
+book_code INT,
+publisher_id INT,
+author_id INT,
+FOREIGN KEY (book_code) REFERENCES Books (book_code),
+FOREIGN KEY (publisher_id) REFERENCES Publisher (publisher_id),
+FOREIGN KEY (author_id) REFERENCES Author (author_id)
+);
+
+
+2)
+
+DESCRIBE Books;
+DESCRIBE Publisher;
+DESCRIBE Author;
+DESCRIBE T1;
+
+
+3)
+
+INSERT INTO Books
+VALUES(22,'Stranger');
+INSERT INTO Books
+VALUES(13,'Dreamcatcher');
+INSERT INTO Books
+VALUES(18,'Beloved');
+INSERT INTO Books
+VALUES(37,'Nine');
+INSERT INTO Books
+VALUES(57,'Catch 22');
+INSERT INTO Books
+VALUES(61,'Jazz');
+INSERT INTO Books
+VALUES(69,'Franny');
+INSERT INTO Books
+VALUES(75,'Fall');
+INSERT INTO Books
+VALUES(96,'Grapes');
+INSERT INTO Books
+VALUES(98,'Catcher');
+
+INSERT INTO Publisher
+VALUES(1,'Vintage');
+INSERT INTO Publisher
+VALUES(2,'Scribner');
+INSERT INTO Publisher
+VALUES(3,'Plume');
+INSERT INTO Publisher
+VALUES(4,'LB Books');
+INSERT INTO Publisher
+VALUES(5,'Penguin');
+
+INSERT INTO Author
+VALUES(1,'Camus');
+INSERT INTO Author
+VALUES(2,'King');
+INSERT INTO Author
+VALUES(3,'Morrison');
+INSERT INTO Author
+VALUES(4,'Salinger');
+INSERT INTO Author
+VALUES(5,'Heller');
+
+INSERT INTO T1
+VALUES(1,22,1,1);
+INSERT INTO T1
+VALUES(2,13,2,2);
+INSERT INTO T1
+VALUES(3,18,3,3);
+INSERT INTO T1
+VALUES(4,37,4,4);
+INSERT INTO T1
+VALUES(5,57,2,5);
+INSERT INTO T1
+VALUES(6,61,3,3);
+INSERT INTO T1
+VALUES(7,69,4,4);
+INSERT INTO T1
+VALUES(8,75,1,1);
+INSERT INTO T1
+VALUES(9,96,5,3);
+INSERT INTO T1
+VALUES(10,98,4,4);
+
+
+4)
+
+SELECT * FROM Books;
+SELECT * FROM Publisher;
+SELECT * FROM Author;
+SELECT * FROM T1;
+
+
+5)
+
+SELECT author_name, book_title
+FROM Books b, Author a, T1 t
+WHERE b.book_code=t.book_code AND
+a.author_id=t.author_id
+ORDER BY author_name desc;
+
+SELECT publisher_name, book_title
+FROM Publisher p, Books b, T1 t
+WHERE p.publisher_id=t.publisher_id
+AND b.book_code=t.book_code
+ORDER BY publisher_name asc;
+
+SELECT author_name, publisher_name
+FROM Author a, Publisher p,T1 t
+WHERE a.author_id=t.author_id 
+AND p.publisher_id=t.publisher_id
+ORDER BY author_name asc;
+
+SELECT book_title
+FROM Books b, T1 t,publisher p
+WHERE b.book_code=t.book_code
+AND p.publisher_id=t.publisher_id
+AND p.publisher_id=2;
+
+SELECT book_title
+FROM Books b, T1 t,publisher p
+WHERE b.book_code=t.book_code
+AND p.publisher_id=t.publisher_id
+AND p.publisher_id=1;
+
+SELECT book_title,publisher_name
+FROM Books b, Publisher p, T1 t
+WHERE b.book_code=t.book_code
+AND p.publisher_id=t.publisher_id
+AND p.Publisher_id IN (1,4,3);
+
+SELECT DISTINCT book_title,publisher_name
+FROM Books b, Publisher p, T1 t
+WHERE b.book_code=t.book_code
+AND p.publisher_id=t.publisher_id
+AND (p.publisher_id=2 OR p.publisher_id=3); 
+
+SELECT book_title,publisher_name
+FROM Books b,Publisher p, T1 t,author a
+WHERE b.book_code=t.book_code
+AND p.publisher_id=t.publisher_id
+AND (p.publisher_name='Penguin' AND a.author_name=3);
+
+
+
+Part2:
+mongod in one command promt and command promt in another for mongo
+>show dbs
+>use cst
+>show collections
+
+>db.createCollection("table1")
+
+>db.table1.insert({bookcode:22,booktitle:"stranger",publisher:"Vintage",author:"Camus"})
+>db.table1.insert({bookcode:13,booktitle:"Dreamcatcher",publisher:"Scribner",author:"King"})
+>db.table1.insert({bookcode:18,booktitle:"Beloved",publisher:"Plume",author:"Morrison"})
+>db.table1.insert({bookcode:37,booktitle:"Nine",publisher:"LB Books",author:"Salinger"})
+>db.table1.insert({bookcode:57,booktitle:"Catch 22",publisher:"Scribner",author:"Heller"})
+>db.table1.insert({bookcode:61,booktitle:"Jazz",publisher:"Plume",author:"Morrison"})
+>db.table1.insert({bookcode:69,booktitle:"Franny",publisher:"LB Books",author:"Salinger"})
+>db.table1.insert({bookcode:75,booktitle:"Fall",publisher:"Vintage",author:"Camus"})
+>db.table1.insert({bookcode:96,booktitle:"Grapes",publisher:"Penguin",author:"Morrison"})
+>db.table1.insert({bookcode:98,booktitle:"Catcher",publisher:"LB Books",author:"Salinger"})
+
+>db.table1.find()
+
+>db.table1.find({ author:"Salinger" })
+                                                            OR we can also do
+>db.table1.find({author:"Salinger"}, {booktitle:" "})
+
+>db.table1.find({publisher:"Vinatge"})
+                                                            OR we can also do
+>db.table1.find({publisher:"Vintage"}, {booktitle:" "})
+
+>db.table1.find({publisher: {$in:["Vintage","LB Books","Plume"]}}, {booktitle:" "})
+
+>db.table1.find( { $or: [{publisher:"Scribner"}, { publisher:"Plume" }] }, {booktitle:" "} )
+
+>db.table1.find( { $and: [ {publisher:"Penguin"}, {author:"Morrison"} ] }, {booktitle:" "})
+
+
+
+Part3: Neo4j
+
+
+create(camus:author{name:"camus"})
+create(king:author{name:"king"})
+create(morrison:author{name:"morrison"})
+create(salinger:author{name:"salinger"})
+create(heller:author{name:"heller"})
+
+create(stranger:book{booktitle:"stranger",bookcode:22})
+create(dreamcatcher:book{booktitle:"dreamcatcher",bookcode:13})
+create(beloved:book{booktitle:"beloved",bookcode:18})
+create(nine:book{booktitle:"nine",bookcode:37})
+create(catch22:book{booktitle:"catch22",bookcode:57})
+create(jazz:book{booktitle:"jazz",bookcode:61})
+create(franny:book{booktitle:"franny",bookcode:69})
+create(fall:book{booktitle:"fall",bookcode:75})
+create(grapes:book{booktitle:"grapes",bookcode:96})
+create(catcher:book{booktitle:"catcher",bookcode:98})
+
+create(vintage:publisher{publishern:"vintage"})
+create(scribner:publisher{publishern:"scribner"})
+create(plume:publisher{publishern:"plume"})
+create(lbbooks:publisher{publishern:"lbbooks"})
+create(penguin:publisher{publishern:"penguin"})
+
+
+2)
+
+match(a:author),(b:book) where a.name="camus" and b.booktitle="stranger"
+create(a)-[r:wrote]->(b)
+match(a:author),(b:book) where a.name="king" and b.booktitle="dreamcatcher"
+create(a)-[r:wrote]->(b)
+match(a:author),(b:book) where a.name="morrison" and b.booktitle="beloved"
+create(a)-[r:wrote]->(b)
+match(a:author),(b:book) where a.name="salinger" and b.booktitle="nine"
+create(a)-[r:wrote]->(b)
+match(a:author),(b:book) where a.name="heller" and b.booktitle="catch22"
+create(a)-[r:wrote]->(b)
+match(a:author),(b:book) where a.name="morrison" and b.booktitle="jazz"
+create(a)-[r:wrote]->(b)
+match(a:author),(b:book) where a.name="salinger" and b.booktitle="franny"
+create(a)-[r:wrote]->(b)
+match(a:author),(b:book) where a.name="camus" and b.booktitle="fall"
+create(a)-[r:wrote]->(b)
+match(a:author),(b:book) where a.name="morrison" and b.booktitle="grapes"
+create(a)-[r:wrote]->(b)
+match(a:author),(b:book) where a.name="salinger" and b.booktitle="catcher"
+create(a)-[r:wrote]->(b)
+
+3) 
+
+MATCH(n) return n
+
+5)
+
+match(p:publisher),(b:book) where p.publishern="vintage" and b.booktitle="stranger"
+create(p)-[r:published]->(b)
+match(p:publisher),(b:book) where p.publishern="scribner" and b.booktitle="dreamcatcher"
+create(p)-[r:published]->(b)
+match(p:publisher),(b:book) where p.publishern="plume" and b.booktitle="beloved"
+create(p)-[r:published]->(b)
+match(p:publisher),(b:book) where p.publishern="lbbooks" and b.booktitle="nine"
+create(p)-[r:published]->(b)
+match(p:publisher),(b:book) where p.publishern="scribner" and b.booktitle="catch22"
+create(p)-[r:published]->(b)
+match(p:publisher),(b:book) where p.publishern="plume" and b.booktitle="jazz"
+create(p)-[r:published]->(b)
+match(p:publisher),(b:book) where p.publishern="lbbooks" and b.booktitle="franny"
+create(p)-[r:published]->(b)
+match(p:publisher),(b:book) where p.publishern="vintage" and b.booktitle="fall"
+create(p)-[r:published]->(b)
+match(p:publisher),(b:book) where p.publishern="penguin" and b.booktitle="grapes"
+create(p)-[r:published]->(b)
+match(p:publisher),(b:book) where p.publishern="lbbooks" and b.booktitle="catcher"
+create(p)-[r:published]->(b)
+
+6)
+
+MATCH(n) return n
+
+8)
+
+match(p:publisher),(a:author) where p.publishern="vintage" and a.name="camus"
+create(p)-[r:contracts]->(a)
+match(p:publisher),(a:author) where p.publishern="scribner" and a.name="king"
+create(p)-[r:contracts]->(a)
+match(p:publisher),(a:author) where p.publishern="plume" and a.name="morrison"
+create(p)-[r:contracts]->(a)
+match(p:publisher),(a:author) where p.publishern="lbbooks" and a.name="salinger"
+create(p)-[r:contracts]->(a)
+match(p:publisher),(a:author) where p.publishern="scribner" and a.name="heller"
+create(p)-[r:contracts]->(a)
+match(p:publisher),(a:author) where p.publishern="penguin" and a.name="morrison"
+create(p)-[r:contracts]->(a)
+
+TO DELETE A RELATIONSHIP:
+
+MATCH (n {publishern:"vintage"})-[r:contracts]->()
+DELETE r
+
+9)
+
+MATCH(n) return n
+
+10)
+
+MATCH(n) RETURN n.name ORDER BY n.name DESC
+
+11)
+
+MATCH(p:publisher)-[r:contracts]->(a:author) where a.name="morrison" return p,a
+
+
+
+
+
+
+
+
