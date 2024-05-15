@@ -1,0 +1,190 @@
+In mysql cunystudent database: note:in oracle sql we have NUMBER(#) OR NUMBER(#,#) but
+in mysql we have NUMERIC datatype instead of being written as NUMBER.
+Also the DATE is written as YYYY-MM-DD in mysql while its format in oracle sql is DD-MM-YYYY.
+In mysql there is a datatype RANK so careful when writing an attribute Rank.
+Also we cant seem to create a table called Order because mysql gets confused so you can 
+either write it differently or write it like this `Order`
+As you know, order is a keyword in MySQL, you cannot give table name order directly.
+You need to use backtick around the table name order.
+Backtick allow a user to consider the keyword as table or column name.
+By doing this you would have to address that table order as `order` with those backticks on it.
+Remember that COUNT count the numbers of total rows/records in the table.
+
+CREATE TABLE Customer(
+customer_id INT PRIMARY KEY,
+customer_name VARCHAR(15),
+address VARCHAR(40)
+);
+
+CREATE TABLE Vendor(
+vendor_id INT PRIMARY KEY,
+vendor_name VARCHAR(25)
+);
+
+CREATE TABLE Item(
+item_id INT PRIMARY KEY,
+item_ordered VARCHAR(25),
+on_hand NUMERIC(6),
+price_per_unit INT
+);
+
+CREATE TABLE OrderT(
+order_id INT PRIMARY KEY,
+customer_id INT,
+ordered_amt NUMERIC(4,0),
+vendor_id INT,
+item_id INT,
+order_date DATE,
+FOREIGN KEY (customer_id) REFERENCES Customer (customer_id),
+FOREIGN KEY (vendor_id) REFERENCES Vendor (vendor_id), 
+FOREIGN KEY (item_id) REFERENCES Item (item_id)
+);
+
+
+
+	This one would work too!
+CREATE TABLE OrderT(
+customer_id INT REFERENCES Customer(customer_id),
+ordered_amt NUMERIC(4,0),
+vendor_id INT REFERENCES Vendor(vendor_id),
+item_id INT REFERENCES Item(item_id),
+order_date DATE,
+PRIMARY KEY(customer_id,vendor_id,item_id,order_date)
+);
+
+	Although this one can be entered, it wont be good because order_id is in PRIMARY KEY part,
+	so if you want it like this do it the way it is like the one above where we get rid of it.
+
+CREATE TABLE OrderT(
+order_id INT,
+customer_id INT REFERENCES Customer(customer_id),
+ordered_amt NUMERIC(4,0),
+vendor_id INT REFERENCES Vendor(vendor_id),
+item_id INT REFERENCES Item(item_id),
+order_date DATE,
+PRIMARY KEY(order_id,customer_id,vendor_id,item_id,order_date)
+);
+
+
+
+
+INSERT INTO Customer
+Values
+(1,'Alice','13-14 5th Avenue');
+INSERT INTO Customer
+Values
+(2,'Bill','55 Maple Drive');
+INSERT INTO Customer
+Values
+(3,'Caitlin','1 Oak Road Apt.3A');
+INSERT INTO Customer
+Values
+(4,'Elizabeth','16 Sunshine Lane');
+INSERT INTO Customer
+Values
+(5,'Laura','66 East 4th Street');
+
+INSERT INTO Vendor
+Values
+(1,'Very Fresh');
+INSERT INTO Vendor
+Values
+(2,'Garden Heaven');
+INSERT INTO Vendor
+Values
+(3,'Produce One');
+INSERT INTO Vendor
+Values
+(4,'Veggie Heaven');
+
+INSERT INTO Item
+Values
+(1,'Plums',100,1);
+INSERT INTO Item
+Values
+(2,'Oranges',300,3);
+INSERT INTO Item
+Values
+(3,'Pears',400,4);
+INSERT INTO Item
+Values
+(4,'Apples',200,2);
+INSERT INTO Item
+Values
+(5,'Bananas',500,5);
+INSERT INTO Item
+Values
+(6,'Kiwi',700,7);
+INSERT INTO Item
+Values
+(7,'Grapes',600,6);
+
+INSERT INTO OrderT
+Values
+(1,1,40,1,1,'2005-01-01');
+INSERT INTO OrderT
+Values
+(2,1,30,2,2,'2005-02-01');
+INSERT INTO OrderT
+Values
+(3,1,10,3,3,'2005-03-01');
+INSERT INTO OrderT
+Values
+(4,1,40,2,2,'2005-04-01');
+INSERT INTO OrderT
+Values
+(5,2,50,1,4,'2005-05-01');
+INSERT INTO OrderT
+Values
+(6,2,100,2,5,'2005-06-01');
+INSERT INTO OrderT
+Values
+(7,2,100,2,5,'2005-07-01');
+INSERT INTO OrderT
+Values
+(8,3,40,1,1,'2005-08-01');
+INSERT INTO OrderT
+Values
+(9,3,40,1,1,'2005-09-01');
+INSERT INTO OrderT
+Values
+(10,4,30,4,6,'2005-10-01');
+INSERT INTO OrderT
+Values
+(11,5,60,4,7,'2005-11-01');
+INSERT INTO OrderT
+Values
+(12,5,10,1,4,'2005-12-01');
+
+
+
+1)This query can help us to see the customer name and address, the item they ordered and how much
+ of it, from what vendor and the date.  
+
+SELECT customer_name,address,item_ordered,ordered_amt,vendor_name,order_date
+FROM Customer c, Vendor v, Item i, OrderT o
+WHERE c.customer_id=o.customer_id
+AND v.vendor_id=o.vendor_id
+AND i.item_id=o.item_id
+ORDER BY order_date;
+
+2) This one shows us the total price of their items that they ordered.
+
+SELECT customer_name,address,item_ordered,vendor_name,order_date,ordered_amt,price_per_unit,ordered_amt*price_per_unit AS Total_price
+FROM Customer c, Vendor v, Item i, OrderT o 
+WHERE c.customer_id=o.customer_id
+AND v.vendor_id=o.vendor_id
+AND i.item_id=o.item_id
+ORDER BY order_date;
+
+3) This one shows us how much on-hand items we have left. but its not counted over to the next 
+row, so its best to use it/see it as by how much is left for the month.
+
+SELECT item_ordered,on_hand,customer_name,ordered_amt,on_hand-ordered_amt AS on_hand_left,order_date
+FROM Customer c, Vendor v, Item i, OrderT o
+WHERE c.customer_id=o.customer_id
+AND v.vendor_id=o.vendor_id
+AND i.item_id=o.item_id
+ORDER BY order_date;
+
+
