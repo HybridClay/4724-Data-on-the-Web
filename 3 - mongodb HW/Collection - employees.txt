@@ -1,0 +1,79 @@
+doesnt matter if its single or double quotes for your strings
+
+Question#1)
+a)
+>use cst
+>db.createCollection("employees")
+
+b)
+>db.employees.insert({employeeid:1,name:"Jones",title:"Manager IT"})
+>db.employees.insert({employeeid:2,name:"Smith",title:"Payroll Clerk"})
+>db.employees.insert({employeeid:3,name:"Green",title:"Supervisor"})
+
+
+
+Question#2)
+>db.employees.find().forEach(printjson)
+
+
+
+Question#3)
+a)
+>var myemployeevar=[{employeeid:4,name:"Lawson",title:"Clerk"},
+                    {employeeid:5,name:"Neilson",title:"Manager Accounting"},
+                    {employeeid:6,name:"Micheals",title:"Supervisor"}]
+
+b)
+>db.employees.insert(myemployeevar)
+
+c)
+>db.employees.find()
+
+
+
+Question#4)
+a)
+>db.employees.update({employeeid:4},{$set:{title:"Senior Clerk"}})
+
+b)
+>db.employees.find()
+
+
+
+Question#5)
+a)
+>db.employees.deleteOne({employeeid:6})
+
+b)
+>db.employees.find()
+
+
+
+Question#6)
+a)
+>db.employees.find().sort({ title: -1 })
+
+b)
+>db.employees.find().sort({ title: 1 })
+
+
+
+Question#7)
+a)
+>db.employees.createIndex({ title: 'text' }) 
+
+b)
+>db.employees.find({                                 
+  $text: {
+    $search: "\"Clerk\""
+    }
+})
+
+c)
+>db.employees.find({       
+  $text: {
+    $search: "\"Manager\""
+    }
+})
+
+
